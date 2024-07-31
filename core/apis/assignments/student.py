@@ -3,8 +3,8 @@ from core import db
 from core.apis import decorators
 from core.apis.responses import APIResponse
 from core.models.assignments import Assignment
-
 from .schema import AssignmentSchema, AssignmentSubmitSchema
+from flask import jsonify,make_response
 student_assignments_resources = Blueprint('student_assignments_resources', __name__)
 
 
@@ -22,6 +22,12 @@ def list_assignments(p):
 @decorators.authenticate_principal
 def upsert_assignment(p, incoming_payload):
     """Create or Edit an assignment"""
+        # Retrieve the value for the 'content' key
+    content_value = incoming_payload.get('content', None)
+    if content_value is None:
+        res = jsonify()
+        res.status_code=400
+        return res
     assignment = AssignmentSchema().load(incoming_payload)
     assignment.student_id = p.student_id
 
@@ -37,6 +43,7 @@ def upsert_assignment(p, incoming_payload):
 def submit_assignment(p, incoming_payload):
     """Submit an assignment"""
     submit_assignment_payload = AssignmentSubmitSchema().load(incoming_payload)
+    
 
     submitted_assignment = Assignment.submit(
         _id=submit_assignment_payload.id,

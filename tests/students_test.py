@@ -1,3 +1,4 @@
+#Test case Passed
 def test_get_assignments_student_1(client, h_student_1):
     response = client.get(
         '/student/assignments',
@@ -10,7 +11,7 @@ def test_get_assignments_student_1(client, h_student_1):
     for assignment in data:
         assert assignment['student_id'] == 1
 
-
+#Test case passed
 def test_get_assignments_student_2(client, h_student_2):
     response = client.get(
         '/student/assignments',
@@ -23,7 +24,7 @@ def test_get_assignments_student_2(client, h_student_2):
     for assignment in data:
         assert assignment['student_id'] == 2
 
-
+#Test case Passed fixed
 def test_post_assignment_null_content(client, h_student_1):
     """
     failure case: content cannot be null
@@ -38,7 +39,7 @@ def test_post_assignment_null_content(client, h_student_1):
 
     assert response.status_code == 400
 
-
+#Test case passed
 def test_post_assignment_student_1(client, h_student_1):
     content = 'ABCD TESTPOST'
 
@@ -56,7 +57,7 @@ def test_post_assignment_student_1(client, h_student_1):
     assert data['state'] == 'DRAFT'
     assert data['teacher_id'] is None
 
-
+#Failed
 def test_submit_assignment_student_1(client, h_student_1):
     response = client.post(
         '/student/assignments/submit',
@@ -73,7 +74,7 @@ def test_submit_assignment_student_1(client, h_student_1):
     assert data['state'] == 'SUBMITTED'
     assert data['teacher_id'] == 2
 
-
+#Test case Passed Fixed
 def test_assignment_resubmit_error(client, h_student_1):
     response = client.post(
         '/student/assignments/submit',

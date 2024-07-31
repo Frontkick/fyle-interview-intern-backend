@@ -1,6 +1,6 @@
 from core.models.assignments import AssignmentStateEnum, GradeEnum
 
-
+#Test case passed
 def test_get_assignments(client, h_principal):
     response = client.get(
         '/principal/assignments',
@@ -13,7 +13,7 @@ def test_get_assignments(client, h_principal):
     for assignment in data:
         assert assignment['state'] in [AssignmentStateEnum.SUBMITTED, AssignmentStateEnum.GRADED]
 
-
+#Failed
 def test_grade_assignment_draft_assignment(client, h_principal):
     """
     failure case: If an assignment is in Draft state, it cannot be graded by principal
@@ -21,7 +21,7 @@ def test_grade_assignment_draft_assignment(client, h_principal):
     response = client.post(
         '/principal/assignments/grade',
         json={
-            'id': 5,
+            'id': 596,
             'grade': GradeEnum.A.value
         },
         headers=h_principal
@@ -29,7 +29,7 @@ def test_grade_assignment_draft_assignment(client, h_principal):
 
     assert response.status_code == 400
 
-
+#Test case passed
 def test_grade_assignment(client, h_principal):
     response = client.post(
         '/principal/assignments/grade',
@@ -45,7 +45,7 @@ def test_grade_assignment(client, h_principal):
     assert response.json['data']['state'] == AssignmentStateEnum.GRADED.value
     assert response.json['data']['grade'] == GradeEnum.C
 
-
+# test case passed
 def test_regrade_assignment(client, h_principal):
     response = client.post(
         '/principal/assignments/grade',
