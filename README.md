@@ -1,4 +1,4 @@
-## Total 17 out of 18 test case are passing
+## Total 18 out of 18 test case are passing
 
 ## Installation
 

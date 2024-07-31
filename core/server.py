@@ -6,13 +6,13 @@ from core.apis.teachers import principal_assignments_resources
 from core.libs import helpers
 from core.libs.exceptions import FyleError
 from werkzeug.exceptions import HTTPException
-
 from sqlalchemy.exc import IntegrityError
+import logging
 
+# Register blueprints
 app.register_blueprint(student_assignments_resources, url_prefix='/student')
 app.register_blueprint(teacher_assignments_resources, url_prefix='/teacher')
 app.register_blueprint(principal_assignments_resources, url_prefix='/principal')
-
 
 @app.route('/')
 def ready():
@@ -20,12 +20,13 @@ def ready():
         'status': 'ready',
         'time': helpers.get_utc_now()
     })
-
     return response
-
 
 @app.errorhandler(Exception)
 def handle_error(err):
+    # Log the exception
+    logging.error(f"Exception occurred: {err}", exc_info=True)
+
     if isinstance(err, FyleError):
         return jsonify(
             error=err.__class__.__name__, message=err.message
@@ -43,4 +44,7 @@ def handle_error(err):
             error=err.__class__.__name__, message=str(err)
         ), err.code
 
-    raise err
+    # For unexpected errors
+    return jsonify(
+        error='InternalServerError', message='An unexpected error occurred'
+    ), 500
