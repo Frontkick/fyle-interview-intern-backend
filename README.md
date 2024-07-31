@@ -28,6 +28,11 @@ You will hear back within 48 hours from us via email.
 1. Fork this repository to your github account
 2. Clone the forked repository and proceed with steps mentioned below
 
+### no need to execute all this commands as i have edockerized the server so just execute command
+```
+sudo docker build -t fyle_assign
+sudo docker run -d -p 7755:7755 fyle_assign
+```
 ### Install requirements
 
 ```
